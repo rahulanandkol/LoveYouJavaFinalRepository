@@ -29,15 +29,15 @@
 		<property name="url" value="jdbc:mysql://localhost:3306/loveyoujavadb" />
 		<property name="username" value="root" />
 		<property name="password" value="root" />
-	</bean> --> 
+	</bean> -->  
 	
-	  <bean id="dataSource"
+	   <bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/edflszri_rahul" />
-		<property name="username" value="edflszri_rahul" />
+		<property name="url" value="jdbc:mysql://localhost:3306/mpzhhpwn_loveyoujavadb" />
+		<property name="username" value="mpzhhpwn_rahul" />
 		<property name="password" value="Anand123*" />
-	</bean>  
+	</bean>   
   
    
    
