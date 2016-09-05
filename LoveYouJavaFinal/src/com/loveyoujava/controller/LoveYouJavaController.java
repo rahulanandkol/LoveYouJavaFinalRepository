@@ -1,14 +1,17 @@
 package com.loveyoujava.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,57 +22,119 @@ import com.loveyoujava.model.LoveYouJavaUploadModel;
 
 @Controller
 public class LoveYouJavaController {
-	
-	//ApplicationContext context= new ClassPathXmlApplicationContext("spring-dispatcher-servlet.xml");
+
+	// ApplicationContext context= new
+	// ClassPathXmlApplicationContext("spring-dispatcher-servlet.xml");
 	@Autowired
 	LoveYouJavaDao loveYouJavaDao;
-	@RequestMapping("/welcome")
-	public ModelAndView displayFirstPage()
-	{
-		ModelAndView model= new ModelAndView("HomePage");
-		List<LoveYouJavaOutputModel> fileDetailList=loveYouJavaDao.fetchFileListFromDb();
+
+	@RequestMapping("/")
+	public ModelAndView displayFirstPage() {
+		ModelAndView model = new ModelAndView("HomePage");
+		List<LoveYouJavaOutputModel> fileDetailList = loveYouJavaDao.fetchFileListFromDb();
 		model.addObject("fileDetailList", fileDetailList);
 		return model;
-		
+
 	}
-	@RequestMapping(value="/upload",method=RequestMethod.GET)
-	public ModelAndView uploadFilePage()
-	{
-		
-		ModelAndView model=new ModelAndView("UploadPage");
-		
+
+	@RequestMapping(value = "/uploadhome", method = RequestMethod.GET)
+	public ModelAndView uploadFilePage() {
+
+		ModelAndView model = new ModelAndView("UploadPage");
+
 		return model;
 	}
-	
-	@RequestMapping(value="upload",method=RequestMethod.POST)
-	public ModelAndView fileUploadProcess(@ModelAttribute("loveYouJavaUploadModel") LoveYouJavaUploadModel loveYouJavaUploadModel) throws Exception {
-		String fileMoveStatusMessage="";
-	
-		String fileTitle=loveYouJavaUploadModel.getFileTitle();
-		System.out.println(fileTitle);
-		String originalFileName=loveYouJavaUploadModel.getMultipartFile().getOriginalFilename();
-		File convertedFile=null;;
+
+	@RequestMapping(value = "upload_old", method = RequestMethod.POST)
+	public ModelAndView fileUploadProcess(
+			@ModelAttribute("loveYouJavaUploadModel") LoveYouJavaUploadModel loveYouJavaUploadModel) {
+		String fileMoveStatusMessage = "";
+		try {
+			String fileTitle = loveYouJavaUploadModel.getFileTitle();
+			System.out.println(fileTitle);
+			String originalFileName = loveYouJavaUploadModel.getMultipartFile().getOriginalFilename();
+			File convertedFile = null;
+
+			convertedFile = loveYouJavaUploadModel.multipartToFile(loveYouJavaUploadModel.getMultipartFile());
+			// loveYouJavaUploadModel.getMultipartFile().transferTo(convertedFile);
+
+			if (convertedFile.renameTo(
+					new File("E:\\WORK\\LoveYouJavaFinalLocalGitRepository\\LoveYouJavaFinal\\WebContent\\resources\\"
+							+ convertedFile.getName())))
+
+			// if(convertedFile.renameTo(new
+			// File("/appservers/apache-tomcat-7x/webapps/loveyoujavafinal/resources/"
+			// + convertedFile.getName())))
+
+			{
+				fileMoveStatusMessage = "File is moved successful";
+				loveYouJavaDao.insertUploadFileEntryToDb(convertedFile.getName(), fileTitle);
+				System.out.println("File moved successfully!");
+			} else {
+				fileMoveStatusMessage = "File is failed to move!";
+				System.out.println("File failed to move!");
+			}
+		} catch (Exception e) {
+			System.out.println("exception in upload controller=" + e);
+			e.printStackTrace();
+		}
+		ModelAndView model = new ModelAndView("UploadPage");
+		model.addObject("message", fileMoveStatusMessage);
+		return model;
+	}
+
+	@RequestMapping(value = "/showDetail/{title}")
+	public ModelAndView showDetail(@PathVariable("title") String title) {
+		String titleContent = "";
+		List<LoveYouJavaOutputModel> fileDetailList = loveYouJavaDao.fetchFileListFromDb();
+		for (int i = 0; i < fileDetailList.size(); i++) {
+			if (fileDetailList.get(i).getFileTitle().equalsIgnoreCase(title)) {
+				titleContent = fileDetailList.get(i).getFileContent();
+				break;
+			}
+
+		}
 		
-			 convertedFile=loveYouJavaUploadModel.multipartToFile(loveYouJavaUploadModel.getMultipartFile());
-			loveYouJavaUploadModel.getMultipartFile().transferTo(convertedFile);
-			
-		//if(convertedFile.renameTo(new File("E:\\WORK\\PROJECTS\\LoveYouJavaFinalWorkSpace\\LoveYouJavaFinal\\WebContent\\resources\\" + convertedFile.getName())))
 		
-		if(convertedFile.renameTo(new File("/home/edflszri/public_html/gokolkata.net/get/resources/" + convertedFile.getName())))
-			
+		ModelAndView model = new ModelAndView("ShowDetail");
+		model.addObject("title", title);
+		if(titleContent.contains("#"))
 		{
-			fileMoveStatusMessage="File is moved successful";
-			loveYouJavaDao.insertUploadFileEntryToDb(convertedFile.getName(), fileTitle);
-    		System.out.println("File moved successfully!");
-    	   }
+		model.addObject("titleContentList", Arrays.asList(titleContent.split("#")));
+		}
 		else
 		{
-			fileMoveStatusMessage="File is failed to move!";
-    		System.out.println("File failed to move!");
-    	   }
-		
-		ModelAndView model=new ModelAndView("UploadPage");
-		model.addObject("message",fileMoveStatusMessage);
+			titleContent=titleContent+"#";	
+		}
+
+		return model;
+
+	}
+
+	@RequestMapping(value = "upload", method = RequestMethod.POST)
+	public ModelAndView fileUploadAndInsert(
+			@ModelAttribute("loveYouJavaUploadModel") LoveYouJavaUploadModel loveYouJavaUploadModel) {
+		String fileMoveStatusMessage = "";
+		String fileContent = "";
+		try {
+			String fileTitle = loveYouJavaUploadModel.getFileTitle();
+			System.out.println(fileTitle);
+			String originalFileName = loveYouJavaUploadModel.getMultipartFile().getOriginalFilename();
+			File uploadedFile = loveYouJavaUploadModel.multipartToFile(loveYouJavaUploadModel.getMultipartFile());
+			BufferedReader br = new BufferedReader(new FileReader(uploadedFile));
+			String lineContent = "";
+			while ((lineContent = br.readLine()) != null) {
+				fileContent = fileContent + lineContent;
+			}
+
+			loveYouJavaDao.insertUploadFileDetailToDb(uploadedFile.getName(), fileTitle, fileContent);
+
+		} catch (Exception e) {
+			System.out.println("exception in upload controller=" + e);
+			e.printStackTrace();
+		}
+		ModelAndView model = new ModelAndView("UploadPage");
+		model.addObject("message", fileMoveStatusMessage);
 		return model;
 	}
 

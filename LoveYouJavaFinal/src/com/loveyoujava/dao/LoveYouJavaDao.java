@@ -19,7 +19,7 @@ public class LoveYouJavaDao {
 	}
 	public List<LoveYouJavaOutputModel> fetchFileListFromDb()
 	{ 
-		String fetchFileListSql="select file_id,file_path,file_title from file_list_detail";
+		String fetchFileListSql="select file_id,file_path,file_title,file_content from file_list_detail";
 		List<LoveYouJavaOutputModel> loveYouJavaFileList=jdbcTemplate.query(fetchFileListSql, new RowMapper<LoveYouJavaOutputModel>(){  
 		    @Override  
 		    public LoveYouJavaOutputModel mapRow(ResultSet rs, int rownumber) throws SQLException {  
@@ -27,12 +27,22 @@ public class LoveYouJavaDao {
 		    	loveYouJavaOutputModel.setFileId(rs.getString("file_id"));  
 		    	loveYouJavaOutputModel.setFilePath(rs.getString("file_path"));
 		    	loveYouJavaOutputModel.setFileTitle(rs.getString("file_title"));
+		    	loveYouJavaOutputModel.setFileContent(rs.getString("file_content"));
 		        return loveYouJavaOutputModel;  
 		    }  
 		    });  
+		System.out.println("fetched content list size="+loveYouJavaFileList.size());
 		return loveYouJavaFileList;
 			
 	}
+	public void insertUploadFileDetailToDb(String filePath,String fileTitle,String fileContent)
+	{
+		String insertUploadFileEntrySql="insert into file_list_detail(file_path,file_title,file_content)values(?,?,?)";
+		jdbcTemplate.update(insertUploadFileEntrySql,filePath,fileTitle,fileContent);		
+	}
+	
+	
+	
 	public void insertUploadFileEntryToDb(String filePath,String fileTitle)
 	{
 		String insertUploadFileEntrySql="insert into file_list_detail(file_path,file_title)values(?,?)";

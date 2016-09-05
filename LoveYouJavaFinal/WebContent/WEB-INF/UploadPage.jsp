@@ -4,72 +4,11 @@
 <head>
    <title>
    </title>
-   <style>
-     
-     div.heading{
-     
-     background-color: darkcyan;
-     margin-bottom:0;
-     } 
-      
-     h1,h2{
-       margin-top: 5;
-       margin-bottom: 5;
-       color:white;
-       margin-left: 20;
-     }
-      table#image1 {
-      width:100%;
-      border=0;
-      height:40px;
-      cellspacing=0px;
-      }
-      
-      #menu {
-       background-color: darkslategray;
-      }
-      
-      div#upload1 
-      {
-         margin: auto;
-         width: 50%;
-         
-         padding: 10px  
-      }
-      .center{
-      margin: auto;}
-      
-      #title{
-          position:relative;
-          left:50px
-          color:black;
-      }
-      
-     
-      #header
-      {
-         
-         margin-bottom:0;
-         margin-left: 25;
-         font-size: 50px;
-         color:white;
-         font-family:cursive; 
-         
-      }
-      #tag_line{
-         margin-top:0;
-         margin-bottom:0;
-         margin-left: 25;
-         font-size: 20px;
-         color:yellow;
-         padding-bottom:10; 
-         
-      }
-      
-      
-    </style>
+   
+
+
 </head>
-<body>
+<body bgcolor="#e6e6ff">
 <div class="heading" id="head">
     <!--     <h1 id="title" style="font-size: 2.5em">
           Love You Java
@@ -82,7 +21,7 @@
            Love You Java
        </p>
        <p id="tag_line">
-        This Java Article will improve your java
+       <i> A junction for Java Lovers</i>
        </p>
        
        
@@ -114,7 +53,7 @@
  -->
      <div id="upload1">
          	
-       	<form action="/LoveYouJavaFinal/upload" method="post" enctype="multipart/form-data">  
+       	<form action="/loveyoujavafinal/upload" method="post" enctype="multipart/form-data">  
          <table class="center">
              <tr>
                 <td>

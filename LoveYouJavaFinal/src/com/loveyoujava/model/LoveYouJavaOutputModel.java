@@ -8,8 +8,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class LoveYouJavaOutputModel {
 	private String fileId;
 	private String filePath;
-	private String fileTitle; 
+	private String fileTitle;
+	private String fileContent;
 	
+	public String getFileContent() {
+		return fileContent;
+	}
+	public void setFileContent(String fileContent) {
+		this.fileContent = fileContent;
+	}
 	public String getFileId() { 
 		return fileId;
 	}
