@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 
 public class LoveYouJavaOutputModel {
-	private String fileId;
+	private int fileId;
 	private String filePath;
 	private String fileTitle;
 	private String fileContent;
@@ -17,10 +17,11 @@ public class LoveYouJavaOutputModel {
 	public void setFileContent(String fileContent) {
 		this.fileContent = fileContent;
 	}
-	public String getFileId() { 
+	
+	public int getFileId() {
 		return fileId;
 	}
-	public void setFileId(String fileId) {
+	public void setFileId(int fileId) {
 		this.fileId = fileId;
 	}
 	public String getFilePath() {

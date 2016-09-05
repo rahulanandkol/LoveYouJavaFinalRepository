@@ -4,26 +4,9 @@
 <head>
    <title>
    </title>
-   <style>
-      
-      table#image1 {
-      width:100%;
-      border=0;
-      height:40px;
-      cellspacing=0px;
-      }
-      
-      div#upload1 
-      {
-         margin: auto;
-         width: 50%;
-         
-         padding: 10px  
-      }
-      
-      .center{
-      margin: auto;}
-    </style>
+   
+
+<link rel="stylesheet" type="text/css" href="loveyoujavastyle.css">
 </head>
 <body>
 <div style="position: relative; left: 0; top: 0;">

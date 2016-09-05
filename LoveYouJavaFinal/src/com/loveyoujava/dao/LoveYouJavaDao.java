@@ -24,7 +24,7 @@ public class LoveYouJavaDao {
 		    @Override  
 		    public LoveYouJavaOutputModel mapRow(ResultSet rs, int rownumber) throws SQLException {  
 		    	LoveYouJavaOutputModel loveYouJavaOutputModel=new LoveYouJavaOutputModel();  
-		    	loveYouJavaOutputModel.setFileId(rs.getString("file_id"));  
+		    	loveYouJavaOutputModel.setFileId(rs.getInt("file_id"));  
 		    	loveYouJavaOutputModel.setFilePath(rs.getString("file_path"));
 		    	loveYouJavaOutputModel.setFileTitle(rs.getString("file_title"));
 		    	loveYouJavaOutputModel.setFileContent(rs.getString("file_content"));

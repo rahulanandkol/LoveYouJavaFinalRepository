@@ -83,13 +83,15 @@ public class LoveYouJavaController {
 		return model;
 	}
 
-	@RequestMapping(value = "/showDetail/{title}")
-	public ModelAndView showDetail(@PathVariable("title") String title) {
+	@RequestMapping(value = "/showDetail/{fileId}")
+	public ModelAndView showDetail(@PathVariable("fileId") int fileId) {
 		String titleContent = "";
+		String title="";
 		List<LoveYouJavaOutputModel> fileDetailList = loveYouJavaDao.fetchFileListFromDb();
 		for (int i = 0; i < fileDetailList.size(); i++) {
-			if (fileDetailList.get(i).getFileTitle().equalsIgnoreCase(title)) {
+			if (fileDetailList.get(i).getFileId()==fileId) {
 				titleContent = fileDetailList.get(i).getFileContent();
+				title=fileDetailList.get(i).getFileTitle();
 				break;
 			}
 
@@ -128,8 +130,10 @@ public class LoveYouJavaController {
 			}
 
 			loveYouJavaDao.insertUploadFileDetailToDb(uploadedFile.getName(), fileTitle, fileContent);
+			fileMoveStatusMessage="file uploaded successfully";
 
 		} catch (Exception e) {
+			fileMoveStatusMessage="exception occured while uploading: "+e;
 			System.out.println("exception in upload controller=" + e);
 			e.printStackTrace();
 		}

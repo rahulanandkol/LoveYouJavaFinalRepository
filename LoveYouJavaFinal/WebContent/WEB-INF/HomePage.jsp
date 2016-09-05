@@ -96,7 +96,7 @@ text-shadow: none;
 
 <ul>
 <c:forEach items="${fileDetailList}" var="fileObject">
-  <li><a href="<c:url value="/showDetail/${fileObject.fileTitle}" /> " target="_blank" >${fileObject.fileTitle}</a></li>
+  <li><a href="<c:url value="/showDetail/${fileObject.fileId}" /> " target="_blank" >${fileObject.fileTitle}</a></li>
 </c:forEach>
 </ul>
 </body>
