@@ -36,6 +36,33 @@ public class LoveYouJavaController {
 		return model;
 
 	}
+	
+	@RequestMapping("/deletehome")
+	public ModelAndView displayDeletePage() {
+		ModelAndView model = new ModelAndView("deleteDetail");
+		List<LoveYouJavaOutputModel> fileDetailList = loveYouJavaDao.fetchFileListFromDb();
+		model.addObject("fileDetailList", fileDetailList);
+		return model;
+
+	}
+	
+	@RequestMapping(value = "/deleteDetail/{fileId}")
+	public ModelAndView deleteDetail(@PathVariable("fileId") int fileId) {
+		String titleContent = "";
+		String title="";
+		String deleteStatusMessage="deletion successful";
+		loveYouJavaDao.deleteFileListFromDb(fileId);
+		
+		ModelAndView model = new ModelAndView("deleteDetail");
+		model.addObject("deleteStatusMessage",deleteStatusMessage);
+		
+		
+
+		return model;
+
+	}
+
+	
 
 	@RequestMapping(value = "/uploadhome", method = RequestMethod.GET)
 	public ModelAndView uploadFilePage() {
@@ -96,8 +123,6 @@ public class LoveYouJavaController {
 			}
 
 		}
-		
-		
 		ModelAndView model = new ModelAndView("ShowDetail");
 		model.addObject("title", title);
 		if(titleContent.contains("#"))

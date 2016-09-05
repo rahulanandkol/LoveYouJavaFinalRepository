@@ -17,6 +17,15 @@ public class LoveYouJavaDao {
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
+	
+	
+	public void deleteFileListFromDb(int fileId)
+	{ 
+		String deleteByIdSql="delete from file_list_detail where file_id=?";
+		jdbcTemplate.update(deleteByIdSql,new Object[]{fileId});
+				
+	}
+	
 	public List<LoveYouJavaOutputModel> fetchFileListFromDb()
 	{ 
 		String fetchFileListSql="select file_id,file_path,file_title,file_content from file_list_detail";
