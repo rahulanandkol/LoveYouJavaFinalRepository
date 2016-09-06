@@ -8,6 +8,22 @@ import org.springframework.web.multipart.MultipartFile;
 public class LoveYouJavaUploadModel {
 	private MultipartFile multipartFile;
 	private String fileTitle;
+	private String editTitle;
+	private String editTitleContent;
+	
+	
+	public String getEditTitleContent() {
+		return editTitleContent;
+	}
+	public void setEditTitleContent(String editTitleContent) {
+		this.editTitleContent = editTitleContent;
+	}
+	public String getEditTitle() {
+		return editTitle;
+	}
+	public void setEditTitle(String editTitle) {
+		this.editTitle = editTitle;
+	}
 	
 	public MultipartFile getMultipartFile() {
 		return multipartFile;

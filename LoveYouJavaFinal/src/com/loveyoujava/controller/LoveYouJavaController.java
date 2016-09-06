@@ -36,7 +36,7 @@ public class LoveYouJavaController {
 		return model;
 
 	}
-	
+
 	@RequestMapping("/deletehome")
 	public ModelAndView displayDeletePage() {
 		ModelAndView model = new ModelAndView("deleteDetail");
@@ -45,24 +45,37 @@ public class LoveYouJavaController {
 		return model;
 
 	}
-	
+
 	@RequestMapping(value = "/deleteDetail/{fileId}")
 	public ModelAndView deleteDetail(@PathVariable("fileId") int fileId) {
 		String titleContent = "";
-		String title="";
-		String deleteStatusMessage="deletion successful";
+		String title = "";
+		String deleteStatusMessage = "deletion successful";
 		loveYouJavaDao.deleteFileListFromDb(fileId);
-		
+
 		ModelAndView model = new ModelAndView("deleteDetail");
-		model.addObject("deleteStatusMessage",deleteStatusMessage);
-		
-		
+		model.addObject("deleteStatusMessage", deleteStatusMessage);
 
 		return model;
 
 	}
 
-	
+	@RequestMapping(value = "editDetail/{fileId}", method = RequestMethod.POST)
+	public ModelAndView editDetail(
+			@ModelAttribute("loveYouJavaUploadModel") LoveYouJavaUploadModel loveYouJavaUploadModel,
+			@PathVariable("fileId") int fileId) {
+		String titleContent = "";
+		String title = "";
+		String deleteStatusMessage = "update  successful";
+		loveYouJavaDao.updateTitleDetail(fileId, loveYouJavaUploadModel.getEditTitle(),
+				loveYouJavaUploadModel.getEditTitleContent());
+
+		ModelAndView model = new ModelAndView("deleteDetail");
+		model.addObject("deleteStatusMessage", deleteStatusMessage);
+
+		return model;
+
+	}
 
 	@RequestMapping(value = "/uploadhome", method = RequestMethod.GET)
 	public ModelAndView uploadFilePage() {
@@ -113,27 +126,48 @@ public class LoveYouJavaController {
 	@RequestMapping(value = "/showDetail/{fileId}")
 	public ModelAndView showDetail(@PathVariable("fileId") int fileId) {
 		String titleContent = "";
-		String title="";
+		String title = "";
 		List<LoveYouJavaOutputModel> fileDetailList = loveYouJavaDao.fetchFileListFromDb();
 		for (int i = 0; i < fileDetailList.size(); i++) {
-			if (fileDetailList.get(i).getFileId()==fileId) {
+			if (fileDetailList.get(i).getFileId() == fileId) {
 				titleContent = fileDetailList.get(i).getFileContent();
-				title=fileDetailList.get(i).getFileTitle();
+				title = fileDetailList.get(i).getFileTitle();
 				break;
 			}
 
 		}
 		ModelAndView model = new ModelAndView("ShowDetail");
 		model.addObject("title", title);
-		if(titleContent.contains("#"))
-		{
-		model.addObject("titleContentList", Arrays.asList(titleContent.split("#")));
-		}
-		else
-		{
-			titleContent=titleContent+"#";	
+		if (titleContent.contains("#")) {
+			model.addObject("titleContentList", Arrays.asList(titleContent.split("#")));
+		} else {
+			titleContent = titleContent + "#";
 		}
 
+		return model;
+
+	}
+
+	@RequestMapping(value = "/displayEditDetailPage/{fileId}")
+	public ModelAndView editDetailDisplay(@PathVariable("fileId") int fileId,@ModelAttribute("loveYouJavaUploadModel") LoveYouJavaUploadModel loveYouJavaUploadModel) {
+		String titleContent = "";
+		String title = "";
+		List<LoveYouJavaOutputModel> fileDetailList = loveYouJavaDao.fetchFileListFromDb();
+		for (int i = 0; i < fileDetailList.size(); i++) {
+			if (fileDetailList.get(i).getFileId() == fileId) {
+				titleContent = fileDetailList.get(i).getFileContent();
+				title = fileDetailList.get(i).getFileTitle();
+				break;
+			}
+
+		}
+		loveYouJavaUploadModel.setEditTitle(title);
+		loveYouJavaUploadModel.setEditTitleContent(titleContent);
+		
+		ModelAndView model = new ModelAndView("editDetailDisplay");
+		model.addObject("titleContent", titleContent);
+		model.addObject("title", title);
+		model.addObject("fileId", fileId);
 		return model;
 
 	}
@@ -155,10 +189,10 @@ public class LoveYouJavaController {
 			}
 
 			loveYouJavaDao.insertUploadFileDetailToDb(uploadedFile.getName(), fileTitle, fileContent);
-			fileMoveStatusMessage="file uploaded successfully";
+			fileMoveStatusMessage = "file uploaded successfully";
 
 		} catch (Exception e) {
-			fileMoveStatusMessage="exception occured while uploading: "+e;
+			fileMoveStatusMessage = "exception occured while uploading: " + e;
 			System.out.println("exception in upload controller=" + e);
 			e.printStackTrace();
 		}

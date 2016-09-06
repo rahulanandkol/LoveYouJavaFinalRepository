@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title> Love you java</title>
+<title> Love you java- Detail display </title>
 <meta charset="utf-8"/>
 <link rel="stylesheet" href="/resources/style.css" type="text/css"/>
 <meta name="viewport" content="width=device-width , initial-scale=1.0">
@@ -88,19 +87,51 @@ text-shadow: none;
 
 <li><a href="#">About us</a> </li>
 
+
 </ul>
 </nav>
 </header>
+<body>
+<h1>Edit details </h1>
+<br>
+<form action="/loveyoujavafinal/editDetail/${fileId}" method="post">
 
-<h1 align="center" >LoveYouJava : Deletion Portal</h1>
+<table>
+<tr>
+<td><input type="text" name="editTitle" value="${loveYouJavaUploadModel.editTitle}"/></td>
+</tr>
+
+<tr>
+<td><textarea rows="10" cols="400" name="editTitleContent">${loveYouJavaUploadModel.editTitleContent}</textarea></td>
+</tr>
+
+<tr>
+<td><input type="submit" value="Update"/></td>
+</tr>
+
+<tr>
+<td>
+</td>
+</tr>
+</table>
+
+
+</form>
+
+
 
 <ul>
-<c:forEach items="${fileDetailList}" var="fileObject">
-  <li>${fileObject.fileTitle}<a href="<c:url value="/deleteDetail/${fileObject.fileId}" /> " target="_blank" > Delete</a> <a href="<c:url value="/displayEditDetailPage/${fileObject.fileId}" /> " target="_blank" > Edit</a></li>
+<c:forEach items="${titleContentList}" var="rowval">
+<li>
+ <c:out value="${rowval}"/>
+ 
+</li>
+<br>
 </c:forEach>
 </ul>
 
 
-<p>${deleteStatusMessage}</p>
+
+
 </body>
 </html>

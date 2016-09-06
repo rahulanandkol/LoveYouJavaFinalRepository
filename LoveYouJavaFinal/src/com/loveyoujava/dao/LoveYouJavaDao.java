@@ -26,6 +26,13 @@ public class LoveYouJavaDao {
 				
 	}
 	
+	public void updateTitleDetail(int fileId,String fileTitle,String fileContent)
+	{ 
+		String updateSql="update file_list_detail set file_title=?, file_content=? where file_id=?";
+		jdbcTemplate.update(updateSql,new Object[]{fileTitle,fileContent,fileId});
+				
+	}
+	
 	public List<LoveYouJavaOutputModel> fetchFileListFromDb()
 	{ 
 		String fetchFileListSql="select file_id,file_path,file_title,file_content from file_list_detail";
